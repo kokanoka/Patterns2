@@ -1,12 +1,10 @@
 package ru.netology.test;
 
-import com.github.javafaker.Faker;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import ru.netology.data.DataGenerator;
-
-import java.util.Locale;
 
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selectors.withText;
@@ -15,13 +13,11 @@ import static com.codeborne.selenide.Selenide.open;
 
 
 public class RegistrationFormTest {
-    private Faker faker = new Faker(new Locale("en"));
     private DataGenerator user;
 
     @BeforeEach
     void Setup() {
         open("http://localhost:9999");
-        user = new DataGenerator();
     }
 
     @Test
@@ -49,7 +45,7 @@ public class RegistrationFormTest {
     @DisplayName("Should get error message if login with wrong login")
     void shouldGetErrorIfWrongLogin() {
         DataGenerator.Registration activeUser = user.getActiveUser();
-        $("[data-test-id=login] input").setValue(faker.name().firstName());
+        $("[data-test-id=login] input").setValue(DataGenerator.getRandomLogin());
         $("[data-test-id=password] input").setValue(activeUser.getPassword());
         $("[data-test-id=action-login]").click();
         $(withText("Неверно указан логин или пароль")).shouldBe(visible);
@@ -60,7 +56,7 @@ public class RegistrationFormTest {
     void shouldGetErrorIfWrongPassword() {
         DataGenerator.Registration activeUser = user.getActiveUser();
         $("[data-test-id=login] input").setValue(activeUser.getLogin());
-        $("[data-test-id=password] input").setValue(faker.internet().password());
+        $("[data-test-id=password] input").setValue(DataGenerator.getRandomPassword());
         $("[data-test-id=action-login]").click();
         $(withText("Неверно указан логин или пароль")).shouldBe(visible);
     }

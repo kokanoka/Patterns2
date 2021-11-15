@@ -23,7 +23,7 @@ public class DataGenerator {
             .build();
     private static final Faker faker = new Faker(new Locale("en"));
 
-    public DataGenerator() {
+    private DataGenerator() {
     }
 
     @Data
@@ -44,13 +44,23 @@ public class DataGenerator {
                 .statusCode(200);
     }
 
-    public Registration getActiveUser(){
+    public static String getRandomLogin() {
+        String login = faker.name().firstName();
+        return login;
+    }
+
+    public static String getRandomPassword() {
+        String password = faker.internet().password();
+        return password;
+    }
+
+    public static Registration getActiveUser(){
         Registration activeUser = new Registration(faker.name().firstName(), faker.internet().password(), "active");
         sendRequest(activeUser);
         return activeUser;
     }
 
-    public Registration getBlockedUser(){
+    public static Registration getBlockedUser(){
         Registration blockedUser = new Registration(faker.name().firstName(), faker.internet().password(), "blocked");
         sendRequest(blockedUser);
         return blockedUser;
